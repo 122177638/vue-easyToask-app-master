@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>周易起问-知命</title>
+    <!--[if lt IE 9]>  
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.js"></script>
+        <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>    
+    <![endif]-->
+    <link rel="stylesheet" href="./static/css/swiper.min.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+  <script>
+    window.onload = function(){
+      // 禁止原生滚动
+      document.getElementById('app').addEventListener('touchmove', function (evt) {
+          if (!evt._isScroller) {
+              evt.preventDefault()
+          }
+      },{passive: false})
+      // 阻止双指放大
+      document.addEventListener('gesturestart', function(event) {
+          event.preventDefault();
+      });
+      // 微信内置浏览器浏览H5页面弹出的键盘遮盖文本框的解决办法 
+      window.addEventListener("resize", function () {
+          if (document.activeElement.tagName == "INPUT" || document.activeElement.tagName == "TEXTAREA") {
+              window.setTimeout(function () {
+                  document.activeElement.scrollIntoViewIfNeeded();
+              }, 0);
+          }
+      })
+    }
+  </script>
+</html>
