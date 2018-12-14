@@ -11,7 +11,7 @@
     </main>
     <v-tabbar v-if="!$route.meta.tabHiiden"></v-tabbar>
     <v-loading :loadParams="{title:'加载中...', hasBgShow:0, loadShow:0}" :isShow='false' :loadShow="0"></v-loading>
-    <previewer :list="previewerList" ref="previewer" :options="options" @on-index-change="logIndexChange"></previewer>
+    <previewer :list="prevImgList" ref="previewer" :options="options" @on-index-change="logIndexChange"></previewer>
   </div>
 </template>
 
@@ -38,7 +38,8 @@ export default {
       transitionName: '',
       keepAlive: [],
       options: {},
-      isPreviewer: false
+      isPreviewer: false,
+      prevImgList: []
     }
   },
 
@@ -83,15 +84,16 @@ export default {
           let that = this;
           var imgList = document.querySelectorAll('img[previewerImg]');
           that.options = {
-            getThumbBoundsFn (index) {
+            getThumbBoundsFn (index, e) {
               let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
               let rect = imgList[index].getBoundingClientRect()
+              console.log(rect, pageYScroll)
               return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
             }
           }
-          let list = [...imgList].map((item) => { return {msrc: item.src, src: item.src} })
-          that.$store.commit('PREVIEWERLIST', list)
-          console.log(this.previewerList)
+          that.prevImgList = [...imgList].map((item) => { return {msrc: item.src, src: item.src} })
+          // that.$store.commit('PREVIEWERLIST', list)
+          // console.log(this.previewerList)
           let imgListLenth = imgList.length;
           for (let i = 0; i < imgListLenth; i++) {
             imgList[i].addEventListener('click', function () {

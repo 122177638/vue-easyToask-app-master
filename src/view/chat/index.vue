@@ -173,7 +173,7 @@ export default {
         let imgPath;
         faceArray.map((item) => {
           if (item.name === $2) {
-            imgPath = `<img src="${item.path}" style="width:0.36rem;height:0.36rem;vertical-align:top" class="emoji" alt="">`;
+            imgPath = `<img src="${item.path}" style="width:0.48rem;height:0.48rem;vertical-align:middle" class="emoji" alt="">`;
           }
         })
         return imgPath;
@@ -296,7 +296,7 @@ export default {
               left:-15px;
               top:10px;
             }
-            p{font-size:15px;color:#333333;word-break: break-all;word-wrap: break-word;line-height: 1.2;}
+            p{font-size:16px;color:#333333;word-break: break-all;word-wrap: break-word;line-height: 1.4;}
           }
           .chat-item-img{
             margin-left:10px;
