@@ -93,7 +93,7 @@ export default {
           }
           that.prevImgList = [...imgList].map((item) => { return {msrc: item.src, src: item.src} })
           // that.$store.commit('PREVIEWERLIST', list)
-          // console.log(this.previewerList)
+          console.log(this.previewerList)
           let imgListLenth = imgList.length;
           for (let i = 0; i < imgListLenth; i++) {
             imgList[i].addEventListener('click', function () {
