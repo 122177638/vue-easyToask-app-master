@@ -67,7 +67,7 @@ const chatData = function () {
 }
 // 响应时间
 Mock.setup({
-  timeout: 10 - 100
+  timeout: 200
 })
 // Mock.mock( url, post/get , 返回的数据)；
 Mock.mock('/putquest/index', 'post', produceNewsData);

@@ -12,7 +12,7 @@
               <h3 class="item-name">{{item.name}}</h3>
               <p class="item-money">奉献值：¥{{item.money}}</p>
             </div>
-            <div class="item-title">{{item.title}}</div>
+            <div :class="['item-title',{'on':index < 3}]">{{item.title}}</div>
           </li>
         </ul>
       </scroll>
@@ -166,6 +166,19 @@ export default {
             color:#ffffff;
             font-size:15px;
             line-height: 22 px;
+          }
+        }
+        .item-title{
+          width:85px;
+          height:28px;
+          background:url('../../assets/img/btnBg02.png') 0% 0% / 100% 100% no-repeat;
+          line-height:28px;
+          text-align:center;
+          color:#757575;
+          font-size:16px;
+          &.on{
+            background:url('../../assets/img/btnBg.png') 0% 0% / 100% 100% no-repeat;
+            color:#e04e3e;
           }
         }
       }

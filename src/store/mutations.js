@@ -6,9 +6,5 @@ export default {
    },
    [types.PREVIEWERLIST] (state, value) {
      state.previewerList = value
-   },
-  [types.DELETEIMG] (state, value) {
-    state.previewerList.splice(value, 1)
-    console.log(state.previewerList)
-  }
+   }
 }

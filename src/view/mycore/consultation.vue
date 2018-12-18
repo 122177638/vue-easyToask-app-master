@@ -21,7 +21,7 @@
             </div>
             <div slot="content"  @click="naviToChat()">
               <div class="consultation-item">
-                <div class="headImg"><img :src="item.img" alt=""></div>
+                <div class="headImg"><img :src="item.img" previewerImg alt=""></div>
                 <div class="item-info">
                   <div class="item-info-top">
                     <h4 class="nickName">{{item.name}}</h4>

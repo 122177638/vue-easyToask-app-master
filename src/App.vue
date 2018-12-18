@@ -67,7 +67,10 @@ export default {
   },
   watch: {
     isPreviewer (now) {
-      if (now) this.previewerInit();
+      if (now) {
+        this.prevImgList = [];
+        this.previewerInit(); 
+      }
     },
     '$route' (to, from) {
       if (to.meta.title)document.title = to.meta.title;
@@ -82,21 +85,22 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           let that = this;
-          var imgList = document.querySelectorAll('img[previewerImg]');
+          let imgList = this.$el.querySelectorAll('img[previewerImg]');
+          console.log(imgList)
           that.options = {
-            getThumbBoundsFn (index, e) {
-              let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+            getThumbBoundsFn (index) {
+              let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
               let rect = imgList[index].getBoundingClientRect()
-              console.log(rect, pageYScroll)
               return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
             }
           }
           that.prevImgList = [...imgList].map((item) => { return {msrc: item.src, src: item.src} })
           // that.$store.commit('PREVIEWERLIST', list)
-          console.log(this.previewerList)
-          let imgListLenth = imgList.length;
-          for (let i = 0; i < imgListLenth; i++) {
-            imgList[i].addEventListener('click', function () {
+          // console.log(that.prevImgList)  
+          let imgListLen = imgList.length;
+          for (let i = 0; i < imgListLen; i++) {
+            imgList[i].addEventListener('click', function (e) {
+              e.stopPropagation();
               that.$refs.previewer.show(i);
             })
           }

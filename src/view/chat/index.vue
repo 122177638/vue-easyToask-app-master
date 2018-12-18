@@ -15,11 +15,10 @@
     <div :class="['chat-wrapper', {'faceActive': faceShow}, {'faceActiveed':chatFaceShow}, {'txActive':txFaceShow}]">
       <scroll class="chat-content" 
         :data="chatData"
-        :isAutoBottom.sync="isAutoBottom"
+        :isAutoScroll.sync="isAutoScroll"
         :isInitBottom="true"
         :listenBeforeScroll="true" 
         @beforeScrollStart="hiddenEmoji"
-        
         ref="scrollNode">
         <div class="chat-content-wrapper">
           <ul class="chat-list">
@@ -82,7 +81,8 @@ export default {
       chatFaceShow: false,
       txFaceShow: false,
       faceShow: false,
-      isAutoBottom: false,
+      isAutoScroll: null,
+      isScrollInit: false,
       chatData: [],
       uid: 1
     }
@@ -92,15 +92,16 @@ export default {
   },
   created () {
     this.isTxBrowser = this.getBrowser(); // 获取浏览器类型
+    this.getChatData()
   },
   mounted () {
     this.scrollNode = this.$refs.scrollNode;
-    this.getChatData()
   },
   methods: {
     getChatData () {
       this.$http.post('/chat').then((response) => {
         this.chatData = response.data.articles;
+        this.isAutoScroll = { direction: 'bottom', method: 'scrollBy' };
       })
     },
     hiddenEmoji () {
@@ -151,7 +152,7 @@ export default {
         headImg: 'https://resourcesyd.linghit.com/yd/yd-cdn/yqw-wxapp-icon/default_avatar.jpg',
         fileImg: ''
       })
-      this.isAutoBottom = true;
+      this.isAutoScroll = {direction: 'bottom', time: 500};
       this.chatValue = '';
       this.faceShow = false;
     },

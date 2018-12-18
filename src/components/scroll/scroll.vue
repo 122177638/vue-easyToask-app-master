@@ -80,14 +80,8 @@
         type: Boolean,
         default: false
       },
-      // 是否初始化滚动到底部
-      isInitBottom: {
-        type: Boolean,
-        default: false
-      },
-      // 数据变化后是否滚动到底部
-      isAutoBottom: {
-        type: Boolean,
+      // 数据变化后是否自动滚动
+      isAutoScroll: {
         default: false
       },
       scrollX: {
@@ -215,7 +209,7 @@
       if (this.isScrollInit) {
         setTimeout(() => {
           this.initScroll()
-        }, 20)
+        }, 50)
       }
     },
     destroyed () {
@@ -300,9 +294,6 @@
         if (this.pullUpLoad) {
           this._initPullUpLoad()
         }
-        if (this.isInitBottom) {
-          this.scrollTo(0, this.scroll.maxScrollY);
-        }
       },
       disable () {
         this.scroll && this.scroll.disable()
@@ -315,6 +306,9 @@
       },
       scrollTo () {
         this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+      },
+      scrollBy () {
+        this.scroll && this.scroll.scrollBy.apply(this.scroll, arguments)
       },
       scrollToElement () {
         this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
@@ -337,11 +331,33 @@
           this.pullUpDirty = dirty
           this.refresh()
         } else {
-          this.refresh()
+          this.refresh();
         }
-        if (this.isAutoBottom) {
-          this.scrollTo(0, this.scroll.maxScrollY, 500);
-          this.$emit('update:isAutoBottom', false)
+        // 数据变化自动滚动某处
+        if (this.isAutoScroll) {
+          if (this.isAutoScroll instanceof Object) {
+            this.isAutoScroll.direction = this.isAutoScroll.direction || 'bottom';
+            this.isAutoScroll.time = this.isAutoScroll.time || '';
+            this.isAutoScroll.method = this.isAutoScroll.method || 'scrollTo';
+            switch (this.isAutoScroll.direction) {
+              case 'left':
+                this[this.isAutoScroll.method](this.scroll.minScrollX, 0, this.isAutoScroll.time);
+                break;
+              case 'right':
+                this[this.isAutoScroll.method](this.scroll.maxScrollX, 0, this.isAutoScroll.time);
+              break;
+              case 'top' :
+                this[this.isAutoScroll.method](0, this.scroll.minScrollY, this.isAutoScroll.time);
+              break;
+              case 'bottom':
+                this[this.isAutoScroll.method](0, this.scroll.maxScrollY, this.isAutoScroll.time);
+              break;
+              default:
+              console.log('%cisAutoScroll是个Object,务必设置其对应属性', 'color:red')
+              break;
+            }
+            this.$emit('update:isAutoScroll', null)
+          }
         }
       },
       _initPullDownRefresh () {
@@ -397,7 +413,11 @@
         }, this.refreshDelay)
       },
       isScrollInit (now) {
-        if (now) setTimeout(() => { this.initScroll(); }, this.refreshDelay)
+        if (now) {
+          setTimeout(() => { 
+            this.initScroll();
+          }, this.refreshDelay)
+        }
       }
     },
     components: {
