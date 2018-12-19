@@ -209,7 +209,7 @@
       if (this.isScrollInit) {
         setTimeout(() => {
           this.initScroll()
-        }, 50)
+        }, 20)
       }
     },
     destroyed () {

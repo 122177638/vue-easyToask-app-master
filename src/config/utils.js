@@ -1,10 +1,11 @@
 /* eslint-disable */
 // uuid
-export const uuid = function (len, radix) {
-  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
-  var uuid = []
-  var i
-  radix = radix || chars.length
+export const uuid = function (len, radix, typeid) {
+  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+  var uuid = [];
+  var typeid = typeid || '';
+  var radix = radix || chars.length;
+  var i;
   if (len) {
     for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix]
   } else {
@@ -18,7 +19,7 @@ export const uuid = function (len, radix) {
       }
     }
   }
-  return uuid.join('')
+  return typeid + '-' + uuid.join('')
 }
 
 // 网址参数转JSON

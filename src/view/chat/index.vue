@@ -2,21 +2,20 @@
   <div class="chat-container">
     <div class="chat-header">
       <div class="chat-header-box">
-        <div class="chat-reply">
+        <div class="chat-reply" @click="$router.go(-1)">
           <span class="chat-reply-num">0</span>
         </div>
         <div class="chat-state-box">
           <h2 class="chat-name">李易峰</h2>
           <p class="chat-state">老师暂不在线，请留言</p>
         </div>
-        <div class="chat-master-home">老师主页</div>
+        <div class="chat-master-home" @click="$router.push('/MasterDetails')">老师主页</div>
       </div>
     </div>
     <div :class="['chat-wrapper', {'faceActive': faceShow}, {'faceActiveed':chatFaceShow}, {'txActive':txFaceShow}]">
       <scroll class="chat-content" 
         :data="chatData"
         :isAutoScroll.sync="isAutoScroll"
-        :isInitBottom="true"
         :listenBeforeScroll="true" 
         @beforeScrollStart="hiddenEmoji"
         ref="scrollNode">
@@ -27,30 +26,9 @@
               <div :class="['chat-item-content',{'reply':item.uid !== uid}]">
                 <div class="chat-item-headImg"><img :src="item.headImg" alt=""></div>
                 <div class="chat-item-txt" v-if="item.content"><p v-html="chatValueHtml(item.content)"></p></div>
-                <div class="chat-item-img" v-if="item.fileImg"><img previewerImg :src="item.fileImg" alt=""></div>
+                <div class="chat-item-img" v-if="item.file"><img class="previewer-img" :src="item.file.img" :data-fid="item.file.fid" @click.stop="imgShow(item.file.fid)" alt=""></div>
               </div>
             </li>
-            <!-- <li class="chat-item">
-              <div class="chat-time-box"><span class="chat-time">2018年11月29日 15:27</span></div>
-              <div class="chat-item-content">
-                <div class="chat-item-headImg"><img src="https://resourcesyd.linghit.com/yd/yd-cdn/yqw-wxapp-icon/default_avatar.jpg" alt=""></div>
-                <div class="chat-item-img"><img previewerImg src="https://yd.ggwan.com/image/yqw/44a7037018b783-1920x1080.jpg" alt=""></div>
-              </div>
-            </li>
-            <li class="chat-item">
-              <div class="chat-time-box"><span class="chat-time">2018年11月29日 15:27</span></div>
-              <div class="chat-item-content reply">
-                <div class="chat-item-headImg"><img src="https://resourcesyd.linghit.com/yd/yd-cdn/yqw-wxapp-icon/default_avatar.jpg" alt=""></div>
-                <div class="chat-item-txt"><p>加我的奇偶我觉得我就都我到家我低价位偶就我都叫哦我哦就</p></div>
-              </div>
-            </li>
-            <li class="chat-item">
-              <div class="chat-time-box"><span class="chat-time">2018年11月29日 15:27</span></div>
-              <div class="chat-item-content reply">
-                <div class="chat-item-headImg"><img src="https://resourcesyd.linghit.com/yd/yd-cdn/yqw-wxapp-icon/default_avatar.jpg" alt=""></div>
-                <div class="chat-item-img"><img previewerImg src="https://yd.ggwan.com/image/yqw/d195a09f3d5d4c-1619x1080.jpg" alt=""></div>
-              </div>
-            </li> -->
           </ul>
         </div>
       </scroll>
@@ -60,9 +38,11 @@
         @blur="chatBlur" 
         @emoji="chatEmoji"
         @file="chatFile"
-        @enter="chatEnter"></inputBox>
+        @enter="chatEnter">
+      </inputBox>
       <face :faceShow="faceShow" @checkFace="checkFace"></face>
     </div>
+    <previewer :list="imgList" ref="previewer" :options="options"></previewer>
   </div>
 </template>
 
@@ -70,10 +50,13 @@
 import Face from '../../components/face/face.vue';
 import faceArray from '../../components/face/face.js'
 import InputBox from '../../components/inputBox/inputBox';
+import { uuid } from '../../config/utils.js'
+import { Previewer } from 'vux'
 export default {
   components: {
     Face,
-    InputBox
+    InputBox,
+    Previewer
   },
   data () {
     return {
@@ -84,7 +67,9 @@ export default {
       isAutoScroll: null,
       isScrollInit: false,
       chatData: [],
-      uid: 1
+      uid: 1,
+      imgList: [],
+      options: {}
     }
   },
   computed: {
@@ -92,7 +77,7 @@ export default {
   },
   created () {
     this.isTxBrowser = this.getBrowser(); // 获取浏览器类型
-    this.getChatData()
+    this.getChatData();
   },
   mounted () {
     this.scrollNode = this.$refs.scrollNode;
@@ -102,7 +87,36 @@ export default {
       this.$http.post('/chat').then((response) => {
         this.chatData = response.data.articles;
         this.isAutoScroll = { direction: 'bottom', method: 'scrollBy' };
+      }).then(() => {
+        this.previewerInit();
+        // this.$store.commit('ISPREVIEWER', true);
       })
+    },
+    previewerInit () {
+      this.$nextTick(() => {
+        let that = this;
+        this.imgList = [];
+        this.chatData.map(item => { 
+          if (item.file && item.file.img) {
+            this.imgList.push({ fid: item.file.fid, msrc: item.file.img, src: item.file.img })
+          }
+        });
+        this.imgNodes = this.$el.querySelectorAll('.previewer-img');
+        this.options = {
+          getThumbBoundsFn (index) {
+            let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+            let rect = that.imgNodes[index].getBoundingClientRect();
+            return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
+          },
+          showHideOpacity: true
+        };
+      })
+    },
+    imgShow (fid) {
+      this.imgList.find((item, index) => {
+        if (item.fid === fid) this.$refs.previewer.show(index);
+      })
+      // this.$parent.imgShow(fid)
     },
     hiddenEmoji () {
       if (this.faceShow) this.faceShow = false;
@@ -140,7 +154,37 @@ export default {
       }
     },
     chatFile (e) {
-      console.log(e)
+      let that = this;
+      let files = e.target.files;
+      let fLen = files.length;
+      if (fLen > 9) {
+        alert('最多同时发送9张图片')
+        return false;
+      }
+      for (let i = 0; i < fLen; i++) {
+        if (files[i].size > 2 * 1024 * 1024) {
+          alert('上传的图片的大于2M,请重新选择');
+          return false;
+        }
+        let reader = new FileReader();
+        reader.readAsDataURL(files[i]);
+        reader.onload = function (ev) {
+          let resultBase = ev.target.result
+          that.chatData.push({
+            content: '',
+            uid: 2,
+            headImg: 'http://img.ggwan.com/yd/userPic/201805/5f98b6dfa2d30524.jpg', 
+            date: '',
+            file: {
+              fid: uuid(8, 18, 'I'),
+              img: resultBase
+            }
+          })
+          that.previewerInit();
+          // that.$store.commit('ISPREVIEWER', true);
+          that.$nextTick(() => { that.isAutoScroll = {direction: 'bottom', time: 500}; })
+        }
+      }
     },
     checkFace (item) {
       this.chatValue += `[${item.name}]`
@@ -150,7 +194,7 @@ export default {
         uid: 2,
         content: this.chatValue,
         headImg: 'https://resourcesyd.linghit.com/yd/yd-cdn/yqw-wxapp-icon/default_avatar.jpg',
-        fileImg: ''
+        file: ''
       })
       this.isAutoScroll = {direction: 'bottom', time: 500};
       this.chatValue = '';
@@ -181,6 +225,9 @@ export default {
       })  
       return newStr;
     }
+  },
+  destroyed () {
+    this.$parent.imgDestroy()
   }
 }
 </script>

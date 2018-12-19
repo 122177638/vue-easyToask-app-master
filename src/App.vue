@@ -9,9 +9,9 @@
         </keep-alive>
       </transition>
     </main>
-    <v-tabbar v-if="!$route.meta.tabHiiden"></v-tabbar>
+    <v-tabbar v-show="!$route.meta.tabHiiden"></v-tabbar>
     <v-loading :loadParams="{title:'加载中...', hasBgShow:0, loadShow:0}" :isShow='false' :loadShow="0"></v-loading>
-    <previewer :list="prevImgList" ref="previewer" :options="options" @on-index-change="logIndexChange"></previewer>
+    <previewer :list="imgList" ref="previewer" :options="options"></previewer>
   </div>
 </template>
 
@@ -29,8 +29,13 @@ export default {
     Previewer
   },
   computed: {
-    previewerList () {
-      return this.$store.getters.getPreviewerList
+    isPreviewer: {
+      get () {
+        return this.$store.getters.getIsPreviewer
+      },
+      set (newValue) {
+        this.$store.commit('ISPREVIEWER', newValue);
+      }
     }
   },
   data () {
@@ -38,12 +43,11 @@ export default {
       transitionName: '',
       keepAlive: [],
       options: {},
-      isPreviewer: false,
-      prevImgList: []
+      imgList: []
     }
   },
-
   created () {
+    console.log(this.isPreviewer)
     // 遍历路由设置keepAlive
     router.options.routes.map((item) => { 
       if (item.meta && item.meta.keepAlive) {
@@ -66,47 +70,46 @@ export default {
 
   },
   watch: {
-    isPreviewer (now) {
-      if (now) {
-        this.prevImgList = [];
-        this.previewerInit(); 
-      }
-    },
+    // isPreviewer (now) {
+    //   if (now) {
+    //     this.previewerInit(); 
+    //   }
+    // },
     '$route' (to, from) {
       if (to.meta.title)document.title = to.meta.title;
-      this.isPreviewer = true;
     }
   },
   methods: {
-    logIndexChange (arg) {
-      console.log(arg)
-    },
     previewerInit () {
       this.$nextTick(() => {
-        setTimeout(() => {
-          let that = this;
-          let imgList = this.$el.querySelectorAll('img[previewerImg]');
-          console.log(imgList)
-          that.options = {
-            getThumbBoundsFn (index) {
-              let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-              let rect = imgList[index].getBoundingClientRect()
-              return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
-            }
-          }
-          that.prevImgList = [...imgList].map((item) => { return {msrc: item.src, src: item.src} })
-          // that.$store.commit('PREVIEWERLIST', list)
-          // console.log(that.prevImgList)  
-          let imgListLen = imgList.length;
-          for (let i = 0; i < imgListLen; i++) {
-            imgList[i].addEventListener('click', function (e) {
-              e.stopPropagation();
-              that.$refs.previewer.show(i);
-            })
-          }
-          that.isPreviewer = false;
-        }, 500)
+        let that = this;
+        this.imgList = [];
+        this.imgNodes = this.$el.querySelectorAll('.previewer-img');
+        [...this.imgNodes].map(item => {
+          let fid = item.dataset.fid;
+          this.imgList.push({ fid: fid, msrc: item.src, src: item.src });
+        })
+        this.options = {
+          getThumbBoundsFn (index) {
+            let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+            let rect = that.imgNodes[index].getBoundingClientRect();
+            return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
+          },
+          showHideOpacity: true
+        };
+        this.$store.commit('ISPREVIEWER', false);
       })
+    },
+    imgShow (fid) {
+      this.imgList.find((item, index) => {
+        if (item.fid === fid) this.$refs.previewer.show(index);
+      })
+    },
+    imgDestroy () {
+      // console.log(this.$refs.previewer.photoswipe)
+      if (this.$refs.previewer.photoswipe) {
+        this.$refs.previewer.photoswipe.close();
+      }
     }
   }
 }

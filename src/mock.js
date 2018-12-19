@@ -35,28 +35,34 @@ const chatData = function () {
             uid: 1,
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
-            fileImg: Random.dataImage('150x150')
+            file: {
+                fid: Random.string('number', 8),
+                img: Random.dataImage('150x150')
+            }
         }
         let newArticleObject1 = {
             content: Random.csentence(20, 40), //  Random.csentence( min, max )
             uid: 1,
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
-            fileImg: ''
+            file: ''
         }
         let newArticleObject2 = {
             content: '[露牙笑]你是不是傻你是不是傻你是不是傻你是不是傻你是不是傻你是不是傻[露牙笑][露牙笑][-_-]', //  Random.csentence( min, max )
             uid: 2,
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
-            fileImg: ''
+            file: ''
         }
         let newArticleObject3 = {
             content: '', //  Random.csentence( min, max )
             uid: 2,
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
-            fileImg: Random.dataImage('150x150')
+            file: {
+                fid: Random.string('number', 8),
+                img: Random.dataImage('150x150')
+            }
         }
         articles.push(newArticleObject, newArticleObject1, newArticleObject2, newArticleObject3)
     }

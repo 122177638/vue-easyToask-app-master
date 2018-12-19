@@ -21,7 +21,7 @@
         </div>
         <div class="chat-footer-file" v-show="!chatValue">
           <label for="files"><img src="./file.png" alt=""></label>
-          <input type="file" id="files" @input="$emit('file',$event)" accept="image/*" multiple="multiple">
+          <input type="file" id="files" @change="$emit('file',$event)" name="file" accept="image/*" multiple="multiple">
         </div>
         <div class="chat-footer-enter" v-show="chatValue" @click="$emit('enter',$event)">发送</div>
       </div>

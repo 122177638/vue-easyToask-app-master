@@ -1,5 +1,5 @@
 export default {
-  getPreviewerList: function (state) {
-    return state.previewerList
+  getIsPreviewer: function (state) {
+    return state.isPreviewer
   }
 }

@@ -21,7 +21,7 @@
             </div>
             <div slot="content"  @click="naviToChat()">
               <div class="consultation-item">
-                <div class="headImg"><img :src="item.img" previewerImg alt=""></div>
+                <div class="headImg"><img :src="item.img" alt=""></div>
                 <div class="item-info">
                   <div class="item-info-top">
                     <h4 class="nickName">{{item.name}}</h4>
@@ -75,6 +75,9 @@ export default {
         {img: 'http://img.ggwan.com/yd/userPic/201805/5f98b6dfa2d30524.jpg', name: 'anles', content: '流弊的人生不需要解释流弊的人生不需要解释流弊的人生不需要解释', time: '10分钟前'}
       ]
     }
+  },
+  mounted () {
+
   },
   methods: {
     onButtonClick (menuItem, index) {

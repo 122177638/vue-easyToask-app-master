@@ -9,7 +9,7 @@ const isDev = process.env.NODE_ENV === 'development'
 
 const state = {
   tabbarShow: true,
-  previewerList: [] // 预览图片集合
+  isPreviewer: false
 }
 const store = new Vuex.Store({
   strict: isDev, // 只能在开发环境使用，限制state在mutation之外的修改

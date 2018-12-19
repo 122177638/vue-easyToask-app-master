@@ -4,7 +4,7 @@ export default {
    [types.TABBARSHOW] (state, value) {
      state.tabbarShow = value
    },
-   [types.PREVIEWERLIST] (state, value) {
-     state.previewerList = value
+   [types.ISPREVIEWER] (state, value) {
+     state.isPreviewer = value
    }
 }
