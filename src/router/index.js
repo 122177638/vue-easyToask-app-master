@@ -17,6 +17,7 @@ const Order = () => import(/* webpackChunkName: "Order" */ './../view/masterDeta
 const Secret = () => import(/* webpackChunkName: "Secret" */ './../view/secret')
 const Putquest = () => import(/* webpackChunkName: "Putquest" */ './../view/putquest')
 const Chat = () => import(/* webpackChunkName: "Chat" */ './../view/chat')
+const QuickQuest = () => import(/* webpackChunkName: "Chat" */ './../view/quickQuest')
 const NotFoundComponent = () => import(/* webpackChunkName: "NotFoundComponent" */ './../view/NotFound')
 
 Vue.use(Router)
@@ -54,7 +55,13 @@ const router = new Router({
       path: '/Putquest',
       name: 'Putquest',
       component: Putquest,
-      meta: { title: '提问', keepAlive: true }
+      meta: { title: '提问列表', keepAlive: true }
+    },  
+    {
+      path: '/QuickQuest',
+      name: 'QuickQuest',
+      component: QuickQuest,
+      meta: { title: '快速提问', tabHiiden: true, isTransition: true }
     },  
     {
       path: '/MasterDetails',

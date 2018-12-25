@@ -20,7 +20,7 @@
             @pullingUp="onPullingUp">
         <ul class="putquest-ul">
           <!-- 提问 -->
-          <li class="putquest-li putquest-start" v-if="questListData">
+          <li class="putquest-li putquest-start" @click="$router.push('/QuickQuest')" v-if="questListData">
             <div class="putquest-start-top">
               <h2 class="quick-quest">快速提问</h2>
               <p class="quick-wen">不知道选哪个老师好？</p>

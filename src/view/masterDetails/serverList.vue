@@ -216,7 +216,6 @@ export default {
         color:#ffffff;
       }
       .server-list{
-       
         transition: all 0.3s;
         .server-item{
           display: flex;

@@ -158,6 +158,7 @@ export default {
   @import url('./assets/css/reset.css');
   // 设置scroll组件滚动条大小
   // .bscroll-vertical-scrollbar{width:4px !important;}
+  .vux-step-item-title{font-size:12px !important;}
    // 公用标题
   .public-title{
     padding:14px 0 16px;

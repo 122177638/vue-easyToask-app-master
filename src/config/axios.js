@@ -1,9 +1,10 @@
 import axios from 'axios'
 import qs from 'qs'
 // 亦可使用vux携带的AjaxPlugin
-import { LoadingPlugin } from 'vux'
+import { LoadingPlugin, ToastPlugin } from 'vux'
 import Vue from 'vue'
 Vue.use(LoadingPlugin)
+Vue.use(ToastPlugin)
 // axios配置
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'

@@ -33,6 +33,7 @@ const chatData = function () {
         let newArticleObject = {
             content: '', //  Random.csentence( min, max )
             uid: 1,
+            cid: Random.csentence(5, 10),
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
             file: {
@@ -43,6 +44,7 @@ const chatData = function () {
         let newArticleObject1 = {
             content: Random.csentence(20, 40), //  Random.csentence( min, max )
             uid: 1,
+            cid: Random.csentence(5, 10),
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
             file: ''
@@ -50,6 +52,7 @@ const chatData = function () {
         let newArticleObject2 = {
             content: '[露牙笑]你是不是傻你是不是傻你是不是傻你是不是傻你是不是傻你是不是傻[露牙笑][露牙笑][-_-]', //  Random.csentence( min, max )
             uid: 2,
+            cid: Random.csentence(5, 10),
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
             file: ''
@@ -57,6 +60,7 @@ const chatData = function () {
         let newArticleObject3 = {
             content: '', //  Random.csentence( min, max )
             uid: 2,
+            cid: Random.csentence(5, 10),
             headImg: Random.dataImage('40x40'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
             date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
             file: {

@@ -26,7 +26,7 @@
               <div :class="['chat-item-content',{'reply':item.uid !== uid}]">
                 <div class="chat-item-headImg"><img :src="item.headImg" alt=""></div>
                 <div class="chat-item-txt" v-if="item.content"><p v-html="chatValueHtml(item.content)"></p></div>
-                <div class="chat-item-img" v-if="item.file"><img class="previewer-img" :src="item.file.img" :data-fid="item.file.fid" @click.stop="imgShow(item.file.fid)" alt=""></div>
+                <div class="chat-item-img" v-if="item.file"><img class="previewer-img" :src="item.file.img" :data-cid="item.cid" @click.stop="imgShow(item.cid)" alt=""></div>
               </div>
             </li>
           </ul>
@@ -98,7 +98,7 @@ export default {
         this.imgList = [];
         this.chatData.map(item => { 
           if (item.file && item.file.img) {
-            this.imgList.push({ fid: item.file.fid, msrc: item.file.img, src: item.file.img })
+            this.imgList.push({ cid: item.cid, msrc: item.file.img, src: item.file.img })
           }
         });
         this.imgNodes = this.$el.querySelectorAll('.previewer-img');
@@ -112,9 +112,9 @@ export default {
         };
       })
     },
-    imgShow (fid) {
+    imgShow (cid) {
       this.imgList.find((item, index) => {
-        if (item.fid === fid) this.$refs.previewer.show(index);
+        if (item.cid === cid) this.$refs.previewer.show(index);
       })
       // this.$parent.imgShow(fid)
     },
@@ -175,6 +175,7 @@ export default {
             uid: 2,
             headImg: 'http://img.ggwan.com/yd/userPic/201805/5f98b6dfa2d30524.jpg', 
             date: '',
+            cid: uuid(8, 18, 'I'),
             file: {
               fid: uuid(8, 18, 'I'),
               img: resultBase

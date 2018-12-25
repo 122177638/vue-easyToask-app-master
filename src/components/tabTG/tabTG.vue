@@ -25,11 +25,9 @@ export default {
       tabActiveLeft: 0
     }
   },
-  created () {
-    this.$nextTick(() => {
-      this.tabbarNode = this.$refs.tabbarNode;
-      this.comtabActive()
-    })
+  mounted () {
+    this.tabbarNode = this.$refs.tabbarNode;
+    this.comtabActive()
   },
   watch: {
     // 监听type切换
